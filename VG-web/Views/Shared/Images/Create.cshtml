@@ -1,0 +1,21 @@
+﻿@model VG_web.ViewModels.ImageViewModel
+
+@{
+    ViewBag.Title = "Добавить";
+}
+
+ <h2>Добавить</h2>
+
+@using (Html.BeginForm("Create", "Images", new { imgId = Model.ImageID}, FormMethod.Post, new { enctype = "multipart/form-data"}))
+{
+    @Html.AntiForgeryToken()
+
+   
+    <div class="form-horizontal">
+        <h4>Image</h4>    
+        <hr />
+    </div>
+    <label for="photo">Photo:</label>
+            <input type="file" name="photo" />
+            <input type="submit" value="Add" class="btn btn-default" />
+}

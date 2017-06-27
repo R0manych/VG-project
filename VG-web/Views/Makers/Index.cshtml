@@ -1,0 +1,60 @@
+﻿@model IEnumerable<VG_web.ViewModels.MakerViewModel>
+
+@{
+    ViewBag.Title = "Производители";
+}
+
+<h2>Производители</h2>
+
+@if (User.Identity.IsAuthenticated)
+{
+<p>
+    @Html.ActionLink("Добавить", "Create")
+</p>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Image)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Website)
+        </th>        
+    <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td width="150">
+                @if (item.Image != null)
+                {
+                    @Html.Raw("<img style='width:150px; height:120px;' src=\"data:image/jpeg;base64," + Convert.ToBase64String(item.Image.Picture) + "\" />")
+                }
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @Html.ActionLink("К изображению", "OpenImage", new { id = item.MakerID })
+                }
+            </td>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td align="center">
+                <a href="@item.Website"> @Html.DisplayFor(ModelItem => item.Website)</a>
+            </td>
+            <td align="center">
+            @if (User.Identity.IsAuthenticated)
+            {
+                @Html.ActionLink("Изменить | ", "Edit", new { id = item.MakerID })
+                @Html.ActionLink("Удалить | ", "Delete", new { id = item.MakerID })
+            }
+            @Html.ActionLink("Подробности", "Details", new { id = item.MakerID })
+            </td>
+        </tr>
+    }
+
+</table>

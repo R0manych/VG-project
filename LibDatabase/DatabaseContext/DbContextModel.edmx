@@ -1,0 +1,660 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="ImageID" Type="int" />
+        </EntityType>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="ImageID" />
+          </Key>
+          <Property Name="ImageID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UI" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Picture" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Maker">
+          <Key>
+            <PropertyRef Name="MakerID" />
+          </Key>
+          <Property Name="MakerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Website" Type="varchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="ImageID" Type="int" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Price" Type="smallmoney" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="MakerID" Type="int" Nullable="false" />
+          <Property Name="ImageID" Type="int" />
+          <Property Name="SubcategoryID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="PropertyID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Property">
+          <Key>
+            <PropertyRef Name="PropertyID" />
+          </Key>
+          <Property Name="PropertyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="Format" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Subcategory">
+          <Key>
+            <PropertyRef Name="SubcategoryID" />
+          </Key>
+          <Property Name="SubcategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CategoryID" Type="int" Nullable="false" />
+          <Property Name="ImageID" Type="int" />
+        </EntityType>
+        <EntityType Name="SubcategoryProperty">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SubcategoryID" Type="int" Nullable="false" />
+          <Property Name="PropertyID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="R_1">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Subcategory" Type="Self.Subcategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="Subcategory">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_10">
+          <End Role="Image" Type="Self.Image" Multiplicity="0..1" />
+          <End Role="Subcategory" Type="Self.Subcategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Image">
+              <PropertyRef Name="ImageID" />
+            </Principal>
+            <Dependent Role="Subcategory">
+              <PropertyRef Name="ImageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_11">
+          <End Role="Image" Type="Self.Image" Multiplicity="0..1" />
+          <End Role="Maker" Type="Self.Maker" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Image">
+              <PropertyRef Name="ImageID" />
+            </Principal>
+            <Dependent Role="Maker">
+              <PropertyRef Name="ImageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_2">
+          <End Role="Subcategory" Type="Self.Subcategory" Multiplicity="1" />
+          <End Role="SubcategoryProperty" Type="Self.SubcategoryProperty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subcategory">
+              <PropertyRef Name="SubcategoryID" />
+            </Principal>
+            <Dependent Role="SubcategoryProperty">
+              <PropertyRef Name="SubcategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_3">
+          <End Role="Property" Type="Self.Property" Multiplicity="1" />
+          <End Role="SubcategoryProperty" Type="Self.SubcategoryProperty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Property">
+              <PropertyRef Name="PropertyID" />
+            </Principal>
+            <Dependent Role="SubcategoryProperty">
+              <PropertyRef Name="PropertyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_4">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="ProductData" Type="Self.ProductData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="ProductData">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_5">
+          <End Role="Property" Type="Self.Property" Multiplicity="1" />
+          <End Role="ProductData" Type="Self.ProductData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Property">
+              <PropertyRef Name="PropertyID" />
+            </Principal>
+            <Dependent Role="ProductData">
+              <PropertyRef Name="PropertyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_6">
+          <End Role="Subcategory" Type="Self.Subcategory" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subcategory">
+              <PropertyRef Name="SubcategoryID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="SubcategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_7">
+          <End Role="Maker" Type="Self.Maker" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Maker">
+              <PropertyRef Name="MakerID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="MakerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_8">
+          <End Role="Image" Type="Self.Image" Multiplicity="0..1" />
+          <End Role="Category" Type="Self.Category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Image">
+              <PropertyRef Name="ImageID" />
+            </Principal>
+            <Dependent Role="Category">
+              <PropertyRef Name="ImageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_9">
+          <End Role="Image" Type="Self.Image" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Image">
+              <PropertyRef Name="ImageID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ImageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Image" EntityType="Self.Image" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Maker" EntityType="Self.Maker" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductData" EntityType="Self.ProductData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Property" EntityType="Self.Property" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subcategory" EntityType="Self.Subcategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubcategoryProperty" EntityType="Self.SubcategoryProperty" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="R_1" Association="Self.R_1">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Subcategory" EntitySet="Subcategory" />
+          </AssociationSet>
+          <AssociationSet Name="R_10" Association="Self.R_10">
+            <End Role="Image" EntitySet="Image" />
+            <End Role="Subcategory" EntitySet="Subcategory" />
+          </AssociationSet>
+          <AssociationSet Name="R_11" Association="Self.R_11">
+            <End Role="Image" EntitySet="Image" />
+            <End Role="Maker" EntitySet="Maker" />
+          </AssociationSet>
+          <AssociationSet Name="R_2" Association="Self.R_2">
+            <End Role="Subcategory" EntitySet="Subcategory" />
+            <End Role="SubcategoryProperty" EntitySet="SubcategoryProperty" />
+          </AssociationSet>
+          <AssociationSet Name="R_3" Association="Self.R_3">
+            <End Role="Property" EntitySet="Property" />
+            <End Role="SubcategoryProperty" EntitySet="SubcategoryProperty" />
+          </AssociationSet>
+          <AssociationSet Name="R_4" Association="Self.R_4">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProductData" EntitySet="ProductData" />
+          </AssociationSet>
+          <AssociationSet Name="R_5" Association="Self.R_5">
+            <End Role="Property" EntitySet="Property" />
+            <End Role="ProductData" EntitySet="ProductData" />
+          </AssociationSet>
+          <AssociationSet Name="R_6" Association="Self.R_6">
+            <End Role="Subcategory" EntitySet="Subcategory" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="R_7" Association="Self.R_7">
+            <End Role="Maker" EntitySet="Maker" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="R_8" Association="Self.R_8">
+            <End Role="Image" EntitySet="Image" />
+            <End Role="Category" EntitySet="Category" />
+          </AssociationSet>
+          <AssociationSet Name="R_9" Association="Self.R_9">
+            <End Role="Image" EntitySet="Image" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ImageID" Type="Int32" />
+          <NavigationProperty Name="Subcategories" Relationship="Self.R_1" FromRole="Category" ToRole="Subcategory" />
+          <NavigationProperty Name="Image" Relationship="Self.R_8" FromRole="Category" ToRole="Image" />
+        </EntityType>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="ImageID" />
+          </Key>
+          <Property Name="ImageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UI" Type="Guid" Nullable="false" />
+          <Property Name="Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Categories" Relationship="Self.R_8" FromRole="Image" ToRole="Category" />
+          <NavigationProperty Name="Subcategories" Relationship="Self.R_10" FromRole="Image" ToRole="Subcategory" />
+          <NavigationProperty Name="Makers" Relationship="Self.R_11" FromRole="Image" ToRole="Maker" />
+          <NavigationProperty Name="Products" Relationship="Self.R_9" FromRole="Image" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Maker">
+          <Key>
+            <PropertyRef Name="MakerID" />
+          </Key>
+          <Property Name="MakerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Website" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImageID" Type="Int32" />
+          <NavigationProperty Name="Image" Relationship="Self.R_11" FromRole="Maker" ToRole="Image" />
+          <NavigationProperty Name="Products" Relationship="Self.R_7" FromRole="Maker" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MakerID" Type="Int32" Nullable="false" />
+          <Property Name="ImageID" Type="Int32" />
+          <Property Name="SubcategoryID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Image" Relationship="Self.R_9" FromRole="Product" ToRole="Image" />
+          <NavigationProperty Name="Maker" Relationship="Self.R_7" FromRole="Product" ToRole="Maker" />
+          <NavigationProperty Name="ProductDatas" Relationship="Self.R_4" FromRole="Product" ToRole="ProductData" />
+          <NavigationProperty Name="Subcategory" Relationship="Self.R_6" FromRole="Product" ToRole="Subcategory" />
+        </EntityType>
+        <EntityType Name="ProductData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="PropertyID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="Self.R_4" FromRole="ProductData" ToRole="Product" />
+          <NavigationProperty Name="Property" Relationship="Self.R_5" FromRole="ProductData" ToRole="Property" />
+        </EntityType>
+        <EntityType Name="Property">
+          <Key>
+            <PropertyRef Name="PropertyID" />
+          </Key>
+          <Property Name="PropertyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Format" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ProductDatas" Relationship="Self.R_5" FromRole="Property" ToRole="ProductData" />
+          <NavigationProperty Name="SubcategoryProperties" Relationship="Self.R_3" FromRole="Property" ToRole="SubcategoryProperty" />
+        </EntityType>
+        <EntityType Name="Subcategory">
+          <Key>
+            <PropertyRef Name="SubcategoryID" />
+          </Key>
+          <Property Name="SubcategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CategoryID" Type="Int32" Nullable="false" />
+          <Property Name="ImageID" Type="Int32" />
+          <NavigationProperty Name="Category" Relationship="Self.R_1" FromRole="Subcategory" ToRole="Category" />
+          <NavigationProperty Name="Image" Relationship="Self.R_10" FromRole="Subcategory" ToRole="Image" />
+          <NavigationProperty Name="Products" Relationship="Self.R_6" FromRole="Subcategory" ToRole="Product" />
+          <NavigationProperty Name="SubcategoryProperties" Relationship="Self.R_2" FromRole="Subcategory" ToRole="SubcategoryProperty" />
+        </EntityType>
+        <EntityType Name="SubcategoryProperty">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubcategoryID" Type="Int32" Nullable="false" />
+          <Property Name="PropertyID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Property" Relationship="Self.R_3" FromRole="SubcategoryProperty" ToRole="Property" />
+          <NavigationProperty Name="Subcategory" Relationship="Self.R_2" FromRole="SubcategoryProperty" ToRole="Subcategory" />
+        </EntityType>
+        <Association Name="R_1">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Subcategory" Type="Self.Subcategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="Subcategory">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_8">
+          <End Role="Image" Type="Self.Image" Multiplicity="0..1" />
+          <End Role="Category" Type="Self.Category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Image">
+              <PropertyRef Name="ImageID" />
+            </Principal>
+            <Dependent Role="Category">
+              <PropertyRef Name="ImageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_10">
+          <End Role="Image" Type="Self.Image" Multiplicity="0..1" />
+          <End Role="Subcategory" Type="Self.Subcategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Image">
+              <PropertyRef Name="ImageID" />
+            </Principal>
+            <Dependent Role="Subcategory">
+              <PropertyRef Name="ImageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_11">
+          <End Role="Image" Type="Self.Image" Multiplicity="0..1" />
+          <End Role="Maker" Type="Self.Maker" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Image">
+              <PropertyRef Name="ImageID" />
+            </Principal>
+            <Dependent Role="Maker">
+              <PropertyRef Name="ImageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_9">
+          <End Role="Image" Type="Self.Image" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Image">
+              <PropertyRef Name="ImageID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ImageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_7">
+          <End Role="Maker" Type="Self.Maker" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Maker">
+              <PropertyRef Name="MakerID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="MakerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_4">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="ProductData" Type="Self.ProductData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="ProductData">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_6">
+          <End Role="Subcategory" Type="Self.Subcategory" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subcategory">
+              <PropertyRef Name="SubcategoryID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="SubcategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_5">
+          <End Role="Property" Type="Self.Property" Multiplicity="1" />
+          <End Role="ProductData" Type="Self.ProductData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Property">
+              <PropertyRef Name="PropertyID" />
+            </Principal>
+            <Dependent Role="ProductData">
+              <PropertyRef Name="PropertyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_3">
+          <End Role="Property" Type="Self.Property" Multiplicity="1" />
+          <End Role="SubcategoryProperty" Type="Self.SubcategoryProperty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Property">
+              <PropertyRef Name="PropertyID" />
+            </Principal>
+            <Dependent Role="SubcategoryProperty">
+              <PropertyRef Name="PropertyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_2">
+          <End Role="Subcategory" Type="Self.Subcategory" Multiplicity="1" />
+          <End Role="SubcategoryProperty" Type="Self.SubcategoryProperty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subcategory">
+              <PropertyRef Name="SubcategoryID" />
+            </Principal>
+            <Dependent Role="SubcategoryProperty">
+              <PropertyRef Name="SubcategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="Images" EntityType="Self.Image" />
+          <EntitySet Name="Makers" EntityType="Self.Maker" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <EntitySet Name="ProductDatas" EntityType="Self.ProductData" />
+          <EntitySet Name="Properties" EntityType="Self.Property" />
+          <EntitySet Name="Subcategories" EntityType="Self.Subcategory" />
+          <EntitySet Name="SubcategoryProperties" EntityType="Self.SubcategoryProperty" />
+          <AssociationSet Name="R_1" Association="Self.R_1">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Subcategory" EntitySet="Subcategories" />
+          </AssociationSet>
+          <AssociationSet Name="R_8" Association="Self.R_8">
+            <End Role="Image" EntitySet="Images" />
+            <End Role="Category" EntitySet="Categories" />
+          </AssociationSet>
+          <AssociationSet Name="R_10" Association="Self.R_10">
+            <End Role="Image" EntitySet="Images" />
+            <End Role="Subcategory" EntitySet="Subcategories" />
+          </AssociationSet>
+          <AssociationSet Name="R_11" Association="Self.R_11">
+            <End Role="Image" EntitySet="Images" />
+            <End Role="Maker" EntitySet="Makers" />
+          </AssociationSet>
+          <AssociationSet Name="R_9" Association="Self.R_9">
+            <End Role="Image" EntitySet="Images" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="R_7" Association="Self.R_7">
+            <End Role="Maker" EntitySet="Makers" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="R_4" Association="Self.R_4">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ProductData" EntitySet="ProductDatas" />
+          </AssociationSet>
+          <AssociationSet Name="R_6" Association="Self.R_6">
+            <End Role="Subcategory" EntitySet="Subcategories" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="R_5" Association="Self.R_5">
+            <End Role="Property" EntitySet="Properties" />
+            <End Role="ProductData" EntitySet="ProductDatas" />
+          </AssociationSet>
+          <AssociationSet Name="R_3" Association="Self.R_3">
+            <End Role="Property" EntitySet="Properties" />
+            <End Role="SubcategoryProperty" EntitySet="SubcategoryProperties" />
+          </AssociationSet>
+          <AssociationSet Name="R_2" Association="Self.R_2">
+            <End Role="Subcategory" EntitySet="Subcategories" />
+            <End Role="SubcategoryProperty" EntitySet="SubcategoryProperties" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="Model.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ImageID" ColumnName="ImageID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Images">
+            <EntityTypeMapping TypeName="Model.Image">
+              <MappingFragment StoreEntitySet="Image">
+                <ScalarProperty Name="ImageID" ColumnName="ImageID" />
+                <ScalarProperty Name="UI" ColumnName="UI" />
+                <ScalarProperty Name="Picture" ColumnName="Picture" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Makers">
+            <EntityTypeMapping TypeName="Model.Maker">
+              <MappingFragment StoreEntitySet="Maker">
+                <ScalarProperty Name="MakerID" ColumnName="MakerID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ImageID" ColumnName="ImageID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="Model.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MakerID" ColumnName="MakerID" />
+                <ScalarProperty Name="ImageID" ColumnName="ImageID" />
+                <ScalarProperty Name="SubcategoryID" ColumnName="SubcategoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductDatas">
+            <EntityTypeMapping TypeName="Model.ProductData">
+              <MappingFragment StoreEntitySet="ProductData">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="PropertyID" ColumnName="PropertyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Properties">
+            <EntityTypeMapping TypeName="Model.Property">
+              <MappingFragment StoreEntitySet="Property">
+                <ScalarProperty Name="PropertyID" ColumnName="PropertyID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Format" ColumnName="Format" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subcategories">
+            <EntityTypeMapping TypeName="Model.Subcategory">
+              <MappingFragment StoreEntitySet="Subcategory">
+                <ScalarProperty Name="SubcategoryID" ColumnName="SubcategoryID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="ImageID" ColumnName="ImageID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubcategoryProperties">
+            <EntityTypeMapping TypeName="Model.SubcategoryProperty">
+              <MappingFragment StoreEntitySet="SubcategoryProperty">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SubcategoryID" ColumnName="SubcategoryID" />
+                <ScalarProperty Name="PropertyID" ColumnName="PropertyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

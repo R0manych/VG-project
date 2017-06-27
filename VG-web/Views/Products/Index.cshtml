@@ -1,0 +1,87 @@
+﻿@model PagedList.IPagedList<VG_web.ViewModels.ProductViewModel>
+@using PagedList.Mvc; 
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Товары в наличии";
+}
+
+<h2>Товары в наличии</h2>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <p>
+        @Html.ActionLink("Добавить", "Create", new { id = ViewBag.SubcategoryId})
+    </p>
+}
+
+@using (Html.BeginForm("Index", "Products", new { subcatId = ViewBag.SubcategoryId }, FormMethod.Get))
+{
+    <p>       
+        Название: @Html.TextBox("searchString")
+        Производитель: @Html.DropDownList("maker", "Все")
+        <input type="submit" value="Найти" class="btn btn-default" />        
+    </p>
+}
+
+<table class="table">
+    <tr>
+        <th></th>
+        <th>
+            
+        </th>
+        <th>
+            
+        </th>        
+        <th>
+           
+        </th>
+        <th>
+            
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @if (item.Image != null && item.Image.Picture != null)
+                {
+                    @Html.Raw("<img class='foc' src=\"data:image/jpeg;base64," + Convert.ToBase64String(item.Image.Picture) + "\" />")
+                }
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @Html.ActionLink("К изображению", "OpenImage", new { id = item.ProductID })
+                }
+            </td>
+            <td align="center">
+                @Html.ActionLink(item.Name, "Index", "ProductData", new { id = item.ProductID }, null)
+            </td>
+            <td align="center">
+                <a href="@item.Maker.Website"/> @Html.DisplayFor(modelItem => item.Maker.Name)
+            </td>           
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td align="center">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @Html.ActionLink("Изменить | ", "Edit", new { id = item.ProductID }) ;
+                    @Html.ActionLink("Удалить | ", "Delete", new { id = item.ProductID });
+                }
+                @Html.ActionLink("Подробности", "Index", "ProductData", new { id = item.ProductID }, null)
+            </td>
+        </tr>
+    }
+</table>
+@if (Model.Any())
+       {
+    @Html.ActionLink("Назад |", "Index", "Subcategories", new { id = Model.FirstOrDefault().SubcategoryID }, null)
+}
+
+Page@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new { subcatId = ViewBag.SubcategoryId, searchString = ViewBag.SearchString, maker = ViewBag.Maker, page }))
+

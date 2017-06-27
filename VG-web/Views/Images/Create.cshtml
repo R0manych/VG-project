@@ -1,0 +1,65 @@
+﻿@model LibDatabase.DatabaseContext.Image
+
+@{
+    ViewBag.Title = "Добавить";
+}
+
+ <h2>Добавить</h2>
+
+@using (Html.BeginForm("Create", "Images", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+   
+    <div class="form-horizontal">
+        <h4>Изображение</h4>    
+        <hr />
+    </div>
+    <input type="submit" value="Добавить" class="btn btn-default" />            
+            
+}
+
+
+<!--<div>
+    <input type="file" name="upload" id="uploadFile" /><br />
+    <button id="submit">Загрузить</button>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+    $('#submit').on('click', function (e) {
+        e.preventDefault();
+        var files = document.getElementById('uploadFile').files;
+        if (files.length > 0) {
+            if (window.FormData !== undefined) {
+                var data = new FormData();
+                for (var x = 0; x < files.length; x++) {
+                    data.append("file" + x, files[x]);
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Upload", "Home")',
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (result) {
+                        alert(result);
+                    },
+                    error: function (xhr, status, p3) {
+                        alert(xhr.responseText);
+                    }
+                });
+            } else {
+                alert("Браузер не поддерживает загрузку файлов HTML5!");
+            }
+        }
+    });
+    </script>
+}
+    -->
+
+<div>
+    @Html.ActionLink("Назад", "Index")
+</div>

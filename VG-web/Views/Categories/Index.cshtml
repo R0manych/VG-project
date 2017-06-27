@@ -1,0 +1,57 @@
+﻿@model IEnumerable<VG_web.ViewModels.CategoryViewModel>
+
+@{
+    ViewBag.Title = "Категории";
+}
+
+<h2>Категории</h2>
+
+@if (User.Identity.IsAuthenticated)
+{
+<p>
+    @Html.ActionLink("Добавить", "Create")
+</p>
+}
+
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Image)
+        </th>
+        <th>
+
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td width="4%">
+            <p>
+            @if (item.Image != null && item.Image.Picture != null)
+            {
+                @Html.Raw("<img style='width:150px; height:120px;' src=\"data:image/jpeg;base64," + Convert.ToBase64String(item.Image.Picture) + "\" />")
+            }      
+            @if (User.Identity.IsAuthenticated)
+            {
+                @Html.ActionLink("К изображению", "OpenImage", new { id = item.CategoryID })
+            }    
+                </p> 
+        </td>
+        <td width="5%" valign="middle" align="center">
+            @Html.ActionLink(item.Name, "IndexAdmin", "Subcategories", new { id = item.CategoryID }, null)
+        </td>        
+        <td align="center" width="15%" valign="middle" >
+        @if (User.Identity.IsAuthenticated)
+        {
+            @Html.ActionLink("Изменить | ", "Edit", new { id=item.CategoryID }) ;
+            @Html.ActionLink("Удалить", "Delete", new { id=item.CategoryID });
+
+        }
+        </td>
+    </tr>
+}
+
+</table>

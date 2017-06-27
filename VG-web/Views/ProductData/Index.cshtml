@@ -1,0 +1,28 @@
+﻿@model IEnumerable<VG_web.ViewModels.ProductDataViewModel>
+
+@{
+    ViewBag.Title = "Подробности";
+}
+
+<h2>Подробности</h2>
+@if (User.Identity.IsAuthenticated)
+{
+    @Html.ActionLink("Добавить", "Create", new { ProductId = ViewBag.ProductId})
+}
+<dl class="dl-horizontal">
+    @foreach (var item in Model)
+    {
+        <dt>
+            @Html.DisplayFor(modelItem => item.Property.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(modelItem => item.Value) 
+            @if (User.Identity.IsAuthenticated)
+            { 
+                 @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
+                 @Html.ActionLink(" | Изменить", "Edit", new { id = item.Id })
+            }
+        </dd>
+    }
+    @Html.ActionLink("Назад", "Index", "Products", new { subcatId = ViewBag.SubcategoryID }, null)
+</dl>

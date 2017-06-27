@@ -1,0 +1,33 @@
+﻿@model VG_web.ViewModels.ProductViewModel
+
+@{
+    ViewBag.Title = "Изображения";
+}
+
+<h2>Изображения</h2>
+
+<p>
+    @Html.ActionLink("Добавить/Изменить", "CreateImage", new { prodId = Model.ProductID })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Image.Picture)
+        </th>
+        <th></th>
+    </tr>
+
+    <tr>       
+            @if (Model.Image != null && Model.Image.Picture != null)
+            {
+        <td>
+            @Html.Raw("<img style='width:80px; height:60px;' src=\"data:image/jpeg;base64," + Convert.ToBase64String(Model.Image.Picture) + "\" />")
+        </td>
+        <td>@Html.ActionLink("Удалить", "DeleteImage", new { prodId = Model.ProductID })</td>
+            }
+        </tr>   
+
+</table>  
+<div>
+    @Html.ActionLink("Вернуться", "Index", new { id = Model.ProductID })
+</div>

@@ -1,0 +1,21 @@
+﻿@model VG_web.ViewModels.PropertyViewModel
+
+@{
+    ViewBag.Title = "Удаление";
+}
+
+<h2>Вы уверены что хотите удалить?</h2>
+<div>
+    <h3>@Html.DisplayFor(model => model.Name)</h3>
+    <hr />
+
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Удалить" class="btn btn-default" /> |
+            @Html.ActionLink("Назад", "Index")
+        </div>
+    }
+</div>

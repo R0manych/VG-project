@@ -1,0 +1,25 @@
+﻿@model VG_web.ViewModels.ImageViewModel
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Are you sure to delete?</h2>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        @if (Model.Picture != null)
+            {
+            @Html.Raw("<img style='width:80px; height:60px;' src=\"data:image/jpeg;base64," + Convert.ToBase64String(Model.Picture) + "\" />")
+        }
+    </dl>
+
+    @using (Html.BeginForm("Delete", "Images", new { id = Model.ImageID }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" />
+            @Html.ActionLink("Back", "Index")
+        </div>
+    }
+</div>
