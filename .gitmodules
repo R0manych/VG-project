@@ -1,0 +1,6 @@
+[submodule "Data"]
+	path = Data
+	url = git@github.com:R0manych/Data.git
+[submodule "Scripts"]
+	path = Scripts
+	url = git@github.com:R0manych/Scripts.git
